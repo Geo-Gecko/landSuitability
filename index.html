@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Leaflet Control Geocoder</title>
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no initial-scale=1, maximum-scale=1">
+
+		<link rel="stylesheet" href="files/leaflet.css" />
+		<link rel="stylesheet" href="files/Control.Geocoder.css" />
+
+		<script src="files/leaflet-src.js"></script>
+		<script src="files/Control.Geocoder.js"></script>
+		<style type="text/css">
+			body {
+				margin: 0;
+			}
+			#map {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="map"></div>
+
+		<script type="text/javascript">
+			var map = L.map('map').setView([0, 0], 2),
+				geocoder = L.Control.Geocoder.nominatim(),
+				control = L.Control.geocoder({
+					geocoder: geocoder
+				}).addTo(map),
+				marker;
+
+			L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+			}).addTo(map);
+			map.scrollWheelZoom.disable();
+			map.doubleClickZoom.disable();
+			map.boxZoom.disable();
+			map.keyboard.disable();
+			map.touchZoom.disable();
+			map.dragging.disable();
+
+			map.on('click', function(e) {
+//				console.log(map.getZoom() < 14);
+				if(map.getZoom() < 14) {
+					map.setView(e.latlng, map.getZoom()+2);	
+				} else {
+					map.setView(e.latlng, map.getZoom());
+					planarRectangle.setBounds([[e.latlng.lat - 0.008, e.latlng.lng - 0.004],[e.latlng.lat + 0.004, e.latlng.lng + 0.008]]);
+				}
+				
+				//							geocoder.reverse(e.latlng, /*map.options.crs.scale(map.getZoom()),*/ function(results) {
+				//								var r = results[0];
+				//								if (r) {
+				//									if (marker) {
+				//										marker.
+				//											setLatLng(r.center).
+				//											setPopupContent(r.html || r.name).
+				//											openPopup();
+				//									} else {
+				//										marker = L.marker(r.center).bindPopup(r.name).addTo(map).openPopup();
+				//									}
+				//								}
+				//							})
+			})
+
+			var planarRectangle = L.rectangle([[-0.008, 0], [0, 0.008]], {
+				fillOpacity: 0,
+				color: '#00f'
+			}).addTo(map);
+
+			//				var desyCircle = LGeo.circle([0, 0], 2000000, {
+			//					parts: 60,
+			//					color: '#f00',
+			//					fillOpacity: 0
+			//				}).addTo(map);
+
+			map.on('mousemove', function(e) {
+				if(map.getZoom() < 14) {
+					planarRectangle.setBounds([[e.latlng.lat - 0.008, e.latlng.lng - 0.004],[e.latlng.lat + 0.004, e.latlng.lng + 0.008]]);
+//					map.setView(e.latlng, map.getZoom()+2);	
+				} else {
+					map.setView(e.latlng, map.getZoom());
+					planarRectangle.setBounds([[e.latlng.lat - 0.008, e.latlng.lng - 0.004],[e.latlng.lat + 0.004, e.latlng.lng + 0.008]]);
+				}
+				//					desyCircle.setLatLng(e.latlng);
+//				planarRectangle.setBounds([[e.latlng.lat - 0.008, e.latlng.lng - 0.004],[e.latlng.lat + 0.004, e.latlng.lng + 0.008]]);
+			});
+		</script>
+	</body>
+</html>
