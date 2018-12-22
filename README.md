@@ -1,2 +1,0 @@
-# landSuitability
-Demo landsuitability
