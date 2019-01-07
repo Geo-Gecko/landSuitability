@@ -2467,7 +2467,7 @@ body {
 }
 .nav-tabs .nav-link.active {
   box-sizing: border-box;
-  color: grey;
+  color: #ffffff;
   font-style: normal;
   font-weight: 500;
   border-radius: 3px;
@@ -2475,7 +2475,7 @@ body {
   padding: 1rem 1rem;
   margin: 0.4rem .8rem !important;
   transition: all .5s;
-  background: #ffffff;
+  background-color: #174e69;
 }
 .nav-tabs .nav-link.active:hover {
   background-color: #174e69;
